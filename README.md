@@ -1,2 +1,2 @@
 # Movies
-Web API project for searching movies from themoviedb.org and adding to local playlists that are stored in local database.
+Web API project for searching movies from themoviedb.org and adding to a local watchlist that is stored in a local database.
