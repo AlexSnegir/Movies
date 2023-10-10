@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using Movies.Application.Abstractions.Messaging;
 
 namespace Movies.Application.Watchlists.Commands.MarkMovieAsWatched;
 
@@ -6,4 +6,4 @@ public sealed record MarkMovieAsWatchedCommand(
     int UserId,
     int MovieId,
     bool IsWatched)
-    : IRequest<MarkMovieAsWatchedResponse>;
+    : ICommand;

@@ -59,6 +59,8 @@ public class WatchlistController : ApiController
         var command = new MarkMovieAsWatchedCommand(userId, movieId, request.IsWatched);
         var response = await Sender.Send(command, cancellationToken);
 
-        return Ok(response);
+        return response.IsSuccess
+            ? Ok(response)
+            : NotFound(response.Error);
     }
 }

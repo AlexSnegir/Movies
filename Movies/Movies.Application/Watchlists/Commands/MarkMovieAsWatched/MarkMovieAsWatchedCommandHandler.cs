@@ -1,11 +1,12 @@
-﻿using MediatR;
+﻿using Movies.Application.Abstractions.Messaging;
 using Movies.Application.Abstractions.Repositories;
 using Movies.Domain.Entities;
+using Movies.Domain.Shared;
 
 namespace Movies.Application.Watchlists.Commands.MarkMovieAsWatched;
 
 internal sealed class MarkMovieAsWatchedCommandHandler
-    : IRequestHandler<MarkMovieAsWatchedCommand, MarkMovieAsWatchedResponse>
+    : ICommandHandler<MarkMovieAsWatchedCommand>
 {
     private readonly IWatchlistRepository<Watchlist> _repository;
 
@@ -14,7 +15,7 @@ internal sealed class MarkMovieAsWatchedCommandHandler
         _repository = repository;
     }
 
-    public async Task<MarkMovieAsWatchedResponse> Handle(
+    public async Task<Result> Handle(
         MarkMovieAsWatchedCommand request,
         CancellationToken cancellationToken)
     {
@@ -25,13 +26,16 @@ internal sealed class MarkMovieAsWatchedCommandHandler
 
         if (movieInWatchlist is null)
         {
-            return await Task.FromResult(new MarkMovieAsWatchedResponse(false));
+            return Result.Failure(
+                new Error(
+                    "WatchlistMovie.NotFound",
+                    "Movie in the watchlist not found"));
         }
 
         movieInWatchlist.IsWatched = request.IsWatched;
         _repository.Update(movieInWatchlist);
         await _repository.SaveChangesAsync(cancellationToken);
 
-        return new MarkMovieAsWatchedResponse(true);
+        return Result.Success();
     }
 }
