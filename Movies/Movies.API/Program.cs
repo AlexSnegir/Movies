@@ -31,3 +31,5 @@ app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 app.MapControllers();
 app.MigrateDatabase<ApplicationDbContext>();
 app.Run();
+
+// This comment is for test commit.
